@@ -115,12 +115,26 @@
 //    self.sv_Main.contentSize = CGSizeMake(self.sv_Main.frame.size.width, self.v_LastObj.frame.origin.y + self.v_LastObj.frame.size.height + 20);
 //    self.lc_ContentsHeight.constant = self.sv_Main.contentSize.height;
 
+    [self.view layoutIfNeeded];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.view layoutIfNeeded];
 }
 
 - (void)viewDidLayoutSubviews
 {
     self.sv_Main.contentSize = CGSizeMake(self.sv_Main.frame.size.width, self.v_LastObj.frame.origin.y + self.v_LastObj.frame.size.height + 20);
     self.lc_ContentsHeight.constant = self.sv_Main.contentSize.height;
+    
+    if( self.sv_Main.contentSize.height > 1100 )
+    {
+        //여기 들어오게 되면 안됨
+        self.sv_Main.contentSize = CGSizeMake(self.sv_Main.frame.size.width, 1069);
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -212,8 +226,6 @@
                                                 
                                                 [weakSelf.view updateConstraintsIfNeeded];
                                                 [weakSelf.view layoutIfNeeded];
-
-                                                
                                             }
                                         }
                                     }];
@@ -253,8 +265,6 @@
                                                 
                                                 [weakSelf.view updateConstraintsIfNeeded];
                                                 [weakSelf.view layoutIfNeeded];
-
-                                                
                                             }
                                         }
                                     }];
@@ -331,7 +341,6 @@
                                                 
                                                 [weakSelf.view updateConstraintsIfNeeded];
                                                 [weakSelf.view layoutIfNeeded];
-
                                             }
                                         }
                                     }];
@@ -362,18 +371,21 @@
                                                 if( [dic_Profile isKindOfClass:[NSNull class]] == NO )
                                                 {
                                                     NSString *str_MyImageUrl = [dic_Profile objectForKey_YM:@"resourceUri"];
-                                                    [self.iv_SnsSampleUser sd_setImageWithURL:[NSURL URLWithString:str_MyImageUrl] placeholderImage:BundleImage(@"no_image_white.png")];
+                                                    [weakSelf.iv_SnsSampleUser sd_setImageWithURL:[NSURL URLWithString:str_MyImageUrl] placeholderImage:BundleImage(@"no_image_white.png")];
                                                 }
                                                 else
                                                 {
-                                                    [self.iv_SnsSampleUser setImage:BundleImage(@"no_image_white.png")];
+                                                    [weakSelf.iv_SnsSampleUser setImage:BundleImage(@"no_image_white.png")];
                                                 }
                                             }
                                             else
                                             {
-                                                [self.iv_SnsSampleUser setImage:BundleImage(@"no_image_white.png")];
+                                                [weakSelf.iv_SnsSampleUser setImage:BundleImage(@"no_image_white.png")];
                                             }
                                         }
+                                        
+                                        [weakSelf.view updateConstraintsIfNeeded];
+                                        [weakSelf.view layoutIfNeeded];
                                     }];
 }
 
@@ -411,7 +423,6 @@
                                                 
                                                 [weakSelf.view updateConstraintsIfNeeded];
                                                 [weakSelf.view layoutIfNeeded];
-                                                
                                             }
                                         }
                                     }];
