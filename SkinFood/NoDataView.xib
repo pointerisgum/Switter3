@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="NoDataView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zga-OH-v1L">
+                    <rect key="frame" x="46" y="63" width="282" height="174"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="study_nodata_icon01.png" translatesAutoresizingMaskIntoConstraints="NO" id="qAv-Dk-G9P">
+                            <rect key="frame" x="0.0" y="0.0" width="282" height="111"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="111" id="FRe-vM-xIX"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="모든 과정을 수료하셨습니다." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PGG-xF-wAs">
+                            <rect key="frame" x="0.0" y="119" width="282" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="PGG-xF-wAs" secondAttribute="trailing" id="2X5-hY-EvF"/>
+                        <constraint firstItem="qAv-Dk-G9P" firstAttribute="top" secondItem="Zga-OH-v1L" secondAttribute="top" id="CQw-cq-qIC"/>
+                        <constraint firstAttribute="trailing" secondItem="qAv-Dk-G9P" secondAttribute="trailing" id="QjV-LV-O0b"/>
+                        <constraint firstAttribute="height" constant="174" id="Us4-mX-DTc"/>
+                        <constraint firstItem="PGG-xF-wAs" firstAttribute="top" secondItem="qAv-Dk-G9P" secondAttribute="bottom" constant="8" id="jfl-2c-wxu"/>
+                        <constraint firstItem="qAv-Dk-G9P" firstAttribute="leading" secondItem="Zga-OH-v1L" secondAttribute="leading" id="l7G-xh-oPF"/>
+                        <constraint firstItem="PGG-xF-wAs" firstAttribute="leading" secondItem="Zga-OH-v1L" secondAttribute="leading" id="wCJ-wF-XLE"/>
+                        <constraint firstAttribute="width" constant="282" id="wCL-bX-U5l"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Zga-OH-v1L" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="PZZ-iW-K0q"/>
+                <constraint firstItem="Zga-OH-v1L" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="X1x-j1-29t"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="iv_Icon" destination="qAv-Dk-G9P" id="y5d-sY-UGq"/>
+                <outlet property="lb_Title" destination="PGG-xF-wAs" id="Fnk-8Z-npl"/>
+            </connections>
+            <point key="canvasLocation" x="25.5" y="52"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="study_nodata_icon01.png" width="110" height="85"/>
+    </resources>
+</document>
