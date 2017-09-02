@@ -91,6 +91,8 @@
         [dicM_Params setObject:self.tf_Lesson.text forKey:@"name"];
     }
 
+    [dicM_Params setObject:@"1000" forKey:@"size"];
+
     [[WebAPI sharedData] callAsyncWebAPIBlock:str_Path
                                         param:dicM_Params
                                    withMethod:@"GET"
