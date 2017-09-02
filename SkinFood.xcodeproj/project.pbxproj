@@ -91,7 +91,6 @@
 		98DCBCE91F3FA447002660D5 /* SnsMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98DCBCE81F3FA447002660D5 /* SnsMainViewController.m */; };
 		98DCBCED1F3FA60A002660D5 /* SnsAlramViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98DCBCEC1F3FA60A002660D5 /* SnsAlramViewController.m */; };
 		98DCBCF01F3FAF4A002660D5 /* SnsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98DCBCEF1F3FAF4A002660D5 /* SnsListViewController.m */; };
-		98E4F7651F5A962900405D2B /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 98E4F7641F5A962900405D2B /* README.md */; };
 		98E6D50B1F34AE3E00640456 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98E6D50A1F34AE3E00640456 /* main.m */; };
 		98E6D50E1F34AE3E00640456 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 98E6D50D1F34AE3E00640456 /* AppDelegate.m */; };
 		98E6D5141F34AE3E00640456 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98E6D5121F34AE3E00640456 /* Main.storyboard */; };
@@ -679,7 +678,6 @@
 		98DCBCEC1F3FA60A002660D5 /* SnsAlramViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnsAlramViewController.m; sourceTree = "<group>"; };
 		98DCBCEE1F3FAF4A002660D5 /* SnsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnsListViewController.h; sourceTree = "<group>"; };
 		98DCBCEF1F3FAF4A002660D5 /* SnsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnsListViewController.m; sourceTree = "<group>"; };
-		98E4F7641F5A962900405D2B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		98E6D5061F34AE3D00640456 /* SkinFood.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkinFood.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98E6D50A1F34AE3E00640456 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		98E6D50C1F34AE3E00640456 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1500,7 +1498,6 @@
 		98E6D4FD1F34AE3D00640456 = {
 			isa = PBXGroup;
 			children = (
-				98E4F7641F5A962900405D2B /* README.md */,
 				98E6F5141F34B0CA00640456 /* PrefixHeader.pch */,
 				98E6D5081F34AE3D00640456 /* SkinFood */,
 				98E6D5221F34AE3E00640456 /* SkinFoodTests */,
@@ -3488,7 +3485,6 @@
 				981F19AB1F56AE20009FF0C4 /* MyPageHeaderCell.m in Sources */,
 				9867E5911F360EE500EA6F9F /* ForRoundView.m in Sources */,
 				98E6F3ED1F34B01A00640456 /* SBJsonStreamParserAccumulator.m in Sources */,
-				98E4F7651F5A962900405D2B /* README.md in Sources */,
 				98E6F3CD1F34B01A00640456 /* BSPreviewCollectionViewCellFactory.m in Sources */,
 				98E6F3781F34B01A00640456 /* UIViewController+ScrollingNavbar.m in Sources */,
 				98DCBCE41F3F4AB0002660D5 /* PDFLessonViewController.m in Sources */,
