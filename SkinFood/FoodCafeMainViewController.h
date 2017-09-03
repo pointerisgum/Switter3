@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface FoodCafeMainViewController : YmBaseViewController
+@property (nonatomic, strong) NSString *str_Id;
 - (void)moveToCategory:(NSString *)aMoveTitle;
 @end

@@ -10,6 +10,7 @@
 #import "StudyStoryDetailViewController.h"
 #import "SnsListViewController.h"
 #import "SnsMainViewController.h"
+#import "MyPageViewController.h"
 
 @interface MoreListCell : UITableViewCell
 @property (nonatomic, weak) IBOutlet UIImageView *iv_Icon;
@@ -182,14 +183,40 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+    
+    ALERT_NOT_AT;
 }
 
+- (IBAction)goStudyStory:(id)sender
+{
+    ALERT_NOT_AT;
+}
+
+- (IBAction)goStoryBox:(id)sender
+{
+    ALERT_NOT_AT;
+}
 
 - (IBAction)goBookMark:(id)sender
 {
     SnsMainViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"SnsMainViewController"];
     vc.isBookMarkMode = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)goSurvey:(id)sender
+{
+    ALERT_NOT_AT;
+}
+
+- (IBAction)goFoodTag:(id)sender
+{
+    ALERT_NOT_AT;
+}
+
+- (IBAction)goMyPage:(id)sender
+{
+    MyPageViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"MyPageViewController"];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

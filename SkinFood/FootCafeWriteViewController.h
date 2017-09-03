@@ -12,6 +12,7 @@ typedef void (^CompletionAddBlock)(id completeResult);
 
 @interface FootCafeWriteViewController : UIViewController
 @property (nonatomic, assign) BOOL isModifyMode;
+@property (nonatomic, strong) NSString *str_ModifyTitle;
 @property (nonatomic, strong) NSDictionary *dic_Info;
 @property (nonatomic, strong) NSDictionary *dic_SelectCategory;
 @property (nonatomic, copy) CompletionAddBlock completionAddBlock;

@@ -296,6 +296,8 @@
                                                     weakSelf.dic_Info = [NSDictionary dictionaryWithDictionary:dic_Data];
                                                     
                                                     NSDictionary *dic_Contents = [weakSelf.dic_Info objectForKey:@"contents"];
+                                                    NSString *str_Title = [dic_Contents objectForKey:@"subject"];
+                                                    weakSelf.lb_MainTitle.text = str_Title;
                                                     
                                                     [weakSelf.tbv_List reloadData];
                                                     
@@ -1149,6 +1151,7 @@
                                        UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:vc];
                                        navi.navigationBarHidden = YES;
                                        vc.isModifyMode = YES;
+                                       vc.str_ModifyTitle = self.str_Title;
                                        vc.dic_Info = self.dic_Info;
                                        [vc setCompletionAddBlock:^(id completeResult) {
                                            

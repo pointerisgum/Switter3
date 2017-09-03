@@ -28,9 +28,10 @@
 @property (nonatomic, strong) NSMutableArray *arM_Noti;
 @property (nonatomic, strong) NSMutableArray *arM_SNS;
 @property (nonatomic, strong) NSMutableArray *arM_Compliment;
+@property (nonatomic, strong) NSMutableArray *arM_Category;
 @property (nonatomic, strong) NSMutableDictionary *dicM_Compliment;
 @property (nonatomic, strong) NSArray *ar_Colors;
-//@property (nonatomic, weak) IBOutlet UIScrollView *sv_Main;
+@property (nonatomic, weak) IBOutlet UIScrollView *sv_MainView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *lc_ContentsHeight;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *lc_NotiHeight;
 @property (nonatomic, weak) IBOutlet UIImageView *iv_Banner;
@@ -46,6 +47,8 @@
 
 @property (nonatomic, weak) IBOutlet UIImageView *iv_SnsSampleUser;
 @property (nonatomic, weak) IBOutlet UILabel *lb_SnsWriteFixText;
+
+@property (nonatomic, weak) IBOutlet UIView *v_Last;
 
 @end
 
@@ -81,14 +84,32 @@
 
     self.ar_Colors = [Common getCategoryColors];
     
+    NSTimer *tm = [NSTimer scheduledTimerWithTimeInterval:0.2f target:self selector:@selector(onReSetLayOut:) userInfo:nil repeats:YES];
 }
 
+- (void)onReSetLayOut:(NSTimer *)tm
+{
+    static NSInteger nTimerCnt = 0;
+    
+    if( nTimerCnt > 100 )
+    {
+        nTimerCnt = 0;
+        [tm invalidate];
+        tm = nil;
+    }
+    
+    self.sv_MainView.contentSize = CGSizeMake(self.sv_MainView.frame.size.width, self.v_Last.frame.origin.y + self.v_Last.frame.size.height + 20);
+    self.lc_ContentsHeight.constant = self.sv_MainView.contentSize.height;
+
+    nTimerCnt++;
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
 //    [ALToastView toastInView:[UIApplication sharedApplication].keyWindow withText:@"home"];
 
+    [self updateNoticeCategory];
     [self updateBanner];            //배너
     [self updateNewLesson];         //신규강의
     [self updateLearningProcess];   //학습과정
@@ -98,6 +119,14 @@
     [self updateCompliment];        //특급칭찬
     
     [self.view setNeedsLayout];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.view layoutIfNeeded];
+    [self.view updateConstraints];
 }
 
 - (void)viewWillLayoutSubviews;
@@ -112,29 +141,8 @@
     flowLayout.itemSize = CGSizeMake(self.cv_Noti.frame.size.width - 16, flowLayout.itemSize.height);
     [flowLayout invalidateLayout];
 
-//    self.sv_Main.contentSize = CGSizeMake(self.sv_Main.frame.size.width, self.v_LastObj.frame.origin.y + self.v_LastObj.frame.size.height + 20);
-//    self.lc_ContentsHeight.constant = self.sv_Main.contentSize.height;
-
     [self.view layoutIfNeeded];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    [self.view layoutIfNeeded];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    self.sv_Main.contentSize = CGSizeMake(self.sv_Main.frame.size.width, self.v_LastObj.frame.origin.y + self.v_LastObj.frame.size.height + 20);
-    self.lc_ContentsHeight.constant = self.sv_Main.contentSize.height;
-    
-    if( self.sv_Main.contentSize.height > 1100 )
-    {
-        //여기 들어오게 되면 안됨
-        self.sv_Main.contentSize = CGSizeMake(self.sv_Main.frame.size.width, 1069);
-    }
+    [self.view updateConstraints];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -270,13 +278,46 @@
                                     }];
 }
 
-- (void)updateNotice
+- (void)updateNoticeCategory
 {
     __weak __typeof(&*self)weakSelf = self;
     
+    [[WebAPI sharedData] callAsyncWebAPIBlock:@"board/list"
+                                        param:nil
+                                   withMethod:@"GET"
+                                    withBlock:^(id resulte, NSError *error) {
+                                        
+                                        if( resulte )
+                                        {
+                                            id dic_Meta = [resulte objectForKey:@"meta"];
+                                            if( [dic_Meta isKindOfClass:[NSNull class]] )
+                                            {
+                                                dic_Meta = nil;
+                                            }
+                                            
+                                            NSInteger nCode = [[dic_Meta objectForKey_YM:@"errCode"] integerValue];
+                                            if( nCode == 0 )
+                                            {
+                                                weakSelf.arM_Category = [NSMutableArray arrayWithArray:[resulte objectForKey:@"data"]];
+                                            }
+                                        }
+                                        
+                                        [weakSelf.view updateConstraintsIfNeeded];
+                                        [weakSelf.view layoutIfNeeded];
+                                    }];
+
+    
+    
+}
+
+- (void)updateNotice
+{
+    __weak __typeof(&*self)weakSelf = self;
+
     NSMutableDictionary *dicM_Params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                         @"1", @"page",
                                         @"3", @"size",
+                                        @"id,desc", @"sort",
                                         nil];
     
     [[WebAPI sharedData] callAsyncWebAPIBlock:@"board/NOTICE/article"
@@ -489,7 +530,8 @@
         
         NSDictionary *dic = self.arM_Thumbs[indexPath.row];
         
-        NSString *str_ImageUrl = [dic objectForKey_YM:@"resourceUri"];
+        NSDictionary *dic_Image = [dic objectForKey:@"image"];
+        NSString *str_ImageUrl = [dic_Image objectForKey_YM:@"resourceUri"];
         cell.iv_Thumb.contentMode = UIViewContentModeScaleAspectFill;
         [cell.iv_Thumb sd_setImageWithURL:[NSURL URLWithString:str_ImageUrl] placeholderImage:BundleImage(@"noimage2.png")];
         cell.lb_Title.text = [dic objectForKey_YM:@"title"];
@@ -695,7 +737,45 @@
 {
     if( collectionView == self.cv_Thumb )
     {
+        NSDictionary *dic_Main = self.arM_Thumbs[indexPath.row];
+        NSInteger nId = [[dic_Main objectForKey_YM:@"linkIdx"] integerValue];
+        NSString *str_Type = [dic_Main objectForKey_YM:@"linkType"];
+        
+        NSDictionary *dic_Category = nil;
+        for( NSInteger i = 0; i < self.arM_Category.count; i++ )
+        {
+            NSDictionary *dic = self.arM_Category[i];
+            if( [[dic objectForKey:@"identifier"] isEqualToString:str_Type] )
+            {
+                dic_Category = dic;
+                break;
+            }
+        }
+        
+        if( dic_Category == nil )   return;
 
+        if( nId > 0 )
+        {
+            //아이디가 있으면 상세로
+            StudyStoryDetailViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"StudyStoryDetailViewController"];
+            vc.str_Id = [NSString stringWithFormat:@"%ld", nId];
+            vc.isFoodMode = YES;
+            vc.str_Title = [dic_Category objectForKey_YM:@"name"];
+            vc.str_FoodIdenti = [dic_Category objectForKey_YM:@"identifier"];
+            vc.isUnAbleWrite = ![[dic_Category objectForKey_YM:@"writeComment"] boolValue];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else
+        {
+            //없으면 리스트로
+            AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            appDelegate.main.selectedIndex = 2;
+            
+            UINavigationController *navi = [appDelegate.main.viewControllers objectAtIndex:2];
+            [navi popToRootViewControllerAnimated:NO];
+            FoodCafeMainViewController *vc = [navi.viewControllers firstObject];
+            [vc moveToCategory:[dic_Category objectForKey_YM:@"name"]];
+        }
     }
     else if( collectionView == self.cv_NewLesson )
     {
@@ -728,6 +808,37 @@
     {
         NSDictionary *dic_Main = self.arM_Noti[indexPath.row];
         
+        /*
+         id = 2;
+         identifier = NOTICE;
+         name = "\Uacf5\Uc9c0\Uc0ac\Ud56d";
+         writeArticle = 0;
+         writeComment = 0;
+         */
+        
+        NSDictionary *dic_Category = nil;
+        for( NSInteger i = 0; i < self.arM_Category.count; i++ )
+        {
+            NSDictionary *dic = self.arM_Category[i];
+            if( [[dic objectForKey:@"identifier"] isEqualToString:@"NOTICE"] )
+            {
+                dic_Category = dic;
+                break;
+            }
+        }
+        
+        if( dic_Category == nil )   return;
+        
+        NSDictionary *dic_Contents = [dic_Main objectForKey:@"contents"];
+        NSString *str_Subject = [dic_Contents objectForKey_YM:@"subject"];
+
+        StudyStoryDetailViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"StudyStoryDetailViewController"];
+        vc.str_Id = [NSString stringWithFormat:@"%@", [dic_Main objectForKey:@"id"]];
+        vc.isFoodMode = YES;
+        vc.str_Title = str_Subject .length > 0 ? str_Subject : [dic_Category objectForKey_YM:@"name"];
+        vc.str_FoodIdenti = [dic_Category objectForKey_YM:@"identifier"];
+        vc.isUnAbleWrite = ![[dic_Category objectForKey_YM:@"writeComment"] boolValue];
+        [self.navigationController pushViewController:vc animated:YES];
     }
     else if( collectionView == self.cv_SNS )
     {
@@ -781,7 +892,7 @@
 #pragma mark - IBAction
 - (IBAction)goBanner:(id)sender
 {
-    
+    ALERT_NOT_AT;
 }
 
 - (IBAction)goSnsWrite:(id)sender

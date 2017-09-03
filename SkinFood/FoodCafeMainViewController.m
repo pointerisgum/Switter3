@@ -348,14 +348,55 @@
     }
     else if( collectionView == self.cv_List )
     {
+        __weak __typeof(&*self)weakSelf = self;
+
         NSDictionary *dic_Main = self.arM_List[indexPath.row];
+        
+        NSDictionary *dic_Contents = [dic_Main objectForKey:@"contents"];
+        NSString *str_Subject = [dic_Contents objectForKey_YM:@"subject"];
         
         StudyStoryDetailViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"StudyStoryDetailViewController"];
         vc.str_Id = [NSString stringWithFormat:@"%@", [dic_Main objectForKey:@"id"]];
         vc.isFoodMode = YES;
-        vc.str_Title = [self.dic_SelectedCategory objectForKey_YM:@"name"];
+        vc.str_Title = str_Subject.length > 0 ? str_Subject : [self.dic_SelectedCategory objectForKey_YM:@"name"];
         vc.str_FoodIdenti = [self.dic_SelectedCategory objectForKey_YM:@"identifier"];
         vc.isUnAbleWrite = ![[self.dic_SelectedCategory objectForKey_YM:@"writeComment"] boolValue];
+        [vc setCompletionUpdateBlock:^(id completeResult) {
+            
+            if( completeResult )
+            {
+                NSInteger nTargetId = [[completeResult objectForKey_YM:@"id"] integerValue];
+                for( NSInteger i = 0; i < weakSelf.arM_List.count; i++ )
+                {
+                    NSDictionary *dic_Tmp = weakSelf.arM_List[i];
+                    NSInteger nTmpId = [[dic_Tmp objectForKey_YM:@"id"] integerValue];
+                    if( nTargetId == nTmpId )
+                    {
+                        [weakSelf.arM_List replaceObjectAtIndex:i withObject:completeResult];
+                        [weakSelf.cv_List reloadData];
+                        break;
+                    }
+                }
+            }
+        }];
+        [vc setCompletionDeleteBlock:^(id completeResult) {
+            
+            if( completeResult )
+            {
+                NSInteger nTargetId = [[completeResult objectForKey_YM:@"id"] integerValue];
+                for( NSInteger i = 0; i < weakSelf.arM_List.count; i++ )
+                {
+                    NSDictionary *dic_Tmp = weakSelf.arM_List[i];
+                    NSInteger nTmpId = [[dic_Tmp objectForKey_YM:@"id"] integerValue];
+                    if( nTargetId == nTmpId )
+                    {
+                        [weakSelf.arM_List removeObject:dic_Tmp];
+                        [weakSelf.cv_List reloadData];
+                        break;
+                    }
+                }
+            }
+        }];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

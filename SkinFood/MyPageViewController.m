@@ -151,27 +151,29 @@
     
     if( [str_Title isEqualToString:@"학습 달력 보기"] )
     {
-        TotalWebViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"TotalWebViewController"];
-        vc.str_Title = str_Title;
-        vc.webViewType = kClanender;
-        vc.str_Url = @"calendar.html";
-        [self presentViewController:vc
-                           animated:YES
-                         completion:^{
-                             
-                         }];
+        ALERT_NOT_AT;
+//        TotalWebViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"TotalWebViewController"];
+//        vc.str_Title = str_Title;
+//        vc.webViewType = kClanender;
+//        vc.str_Url = @"calendar.html";
+//        [self presentViewController:vc
+//                           animated:YES
+//                         completion:^{
+//                             
+//                         }];
     }
     else if( [str_Title isEqualToString:@"출석부"] )
     {
-        TotalWebViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"TotalWebViewController"];
-        vc.str_Title = str_Title;
-        vc.webViewType = kAttendance;
-        vc.str_Url = @"";
-        [self presentViewController:vc
-                           animated:YES
-                         completion:^{
-                             
-                         }];
+        ALERT_NOT_AT;
+//        TotalWebViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"TotalWebViewController"];
+//        vc.str_Title = str_Title;
+//        vc.webViewType = kAttendance;
+//        vc.str_Url = @"";
+//        [self presentViewController:vc
+//                           animated:YES
+//                         completion:^{
+//                             
+//                         }];
     }
     else if( [str_Title isEqualToString:@"나의 정보 변경"] )
     {

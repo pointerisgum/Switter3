@@ -18,6 +18,7 @@
     self.clipsToBounds = YES;
     
     self.iv_Thumb.layer.cornerRadius = 4.f;
+    self.btn_CommentCnt.userInteractionEnabled = NO;
     
     [Util makeShadow:self];
 }

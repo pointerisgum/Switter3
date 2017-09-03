@@ -91,6 +91,7 @@
         [dicM_Params setObject:self.tf_Lesson.text forKey:@"name"];
     }
 
+    [dicM_Params setObject:@"id,desc" forKey:@"sort"];
     [dicM_Params setObject:@"1000" forKey:@"size"];
 
     [[WebAPI sharedData] callAsyncWebAPIBlock:str_Path
@@ -184,6 +185,8 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    __weak __typeof(&*self)weakSelf = self;
+
     NSDictionary *dic_Main = self.arM_List[indexPath.row];
 
     StudyStoryDetailViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"StudyStoryDetailViewController"];
@@ -191,6 +194,43 @@
     vc.isFoodMode = YES;
     vc.str_Title = [self.dic_SelectedCategory objectForKey_YM:@"name"];
     vc.str_FoodIdenti = [self.dic_SelectedCategory objectForKey_YM:@"identifier"];
+    vc.isUnAbleWrite = ![[self.dic_SelectedCategory objectForKey_YM:@"writeComment"] boolValue];
+    [vc setCompletionUpdateBlock:^(id completeResult) {
+        
+        if( completeResult )
+        {
+            NSInteger nTargetId = [[completeResult objectForKey_YM:@"id"] integerValue];
+            for( NSInteger i = 0; i < weakSelf.arM_List.count; i++ )
+            {
+                NSDictionary *dic_Tmp = weakSelf.arM_List[i];
+                NSInteger nTmpId = [[dic_Tmp objectForKey_YM:@"id"] integerValue];
+                if( nTargetId == nTmpId )
+                {
+                    [weakSelf.arM_List replaceObjectAtIndex:i withObject:completeResult];
+                    [weakSelf.cv_List reloadData];
+                    break;
+                }
+            }
+        }
+    }];
+    [vc setCompletionDeleteBlock:^(id completeResult) {
+        
+        if( completeResult )
+        {
+            NSInteger nTargetId = [[completeResult objectForKey_YM:@"id"] integerValue];
+            for( NSInteger i = 0; i < weakSelf.arM_List.count; i++ )
+            {
+                NSDictionary *dic_Tmp = weakSelf.arM_List[i];
+                NSInteger nTmpId = [[dic_Tmp objectForKey_YM:@"id"] integerValue];
+                if( nTargetId == nTmpId )
+                {
+                    [weakSelf.arM_List removeObject:dic_Tmp];
+                    [weakSelf.cv_List reloadData];
+                    break;
+                }
+            }
+        }
+    }];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -71,13 +71,15 @@ static const NSInteger kMaxImageCnt = 3;
     if( self.isModifyMode )
     {
         self.lb_MainTitle.text = @"수정하기";
+
+        [self updateCategory];
         
-//        self.dic_Category = [self.dic_Info objectForKey:@"category"];
+        NSDictionary *dic_Contents = [self.dic_Info objectForKey:@"contents"];
+        self.tf_Title.text = [dic_Contents objectForKey_YM:@"subject"];
+        
         self.dic_Header = [self.dic_Info objectForKey:@"category"];
-//        self.tf_Category.text = [self.dic_Category objectForKey:@"text"];
         self.tf_Header.text = [self.dic_Header objectForKey:@"text"];
         
-        NSDictionary *dic_Contents = [NSDictionary dictionaryWithDictionary:[self.dic_Info objectForKey:@"contents"]];
         self.tv_Contents.text = [dic_Contents objectForKey:@"body"];
         
         self.btn_Secret.selected = [[self.dic_Info objectForKey:@"secret"] boolValue];
@@ -127,8 +129,57 @@ static const NSInteger kMaxImageCnt = 3;
     else
     {
         self.lb_MainTitle.text = @"글쓰기";
+        
+        if( [[self.dic_Category objectForKey_YM:@"name"] isEqualToString:@"물류문의"] )
+        {
+            self.tv_Contents.text = @"매장명 : \n주문일자(출고일자) : \n물류코드 : \n제품명 : \n내용 : \n송장번호(선택) : \n";
+        }
+        else if( [[self.dic_Category objectForKey_YM:@"name"] isEqualToString:@"개선해 주세요"] || [[self.dic_Category objectForKey_YM:@"name"] isEqualToString:@"개선해주세요"] )
+//            else
+        {
+            self.tv_Contents.placeholder = @"*제품 문의 : 제품 효능, 특징, 성분, 출시요청 등\n*재고, 물류 : 품절, 입고 일정 등\n*디자인 : 용기디자인, 유니폼, 연출물, POP 등\n*고객관리/CRM : 멤버십, 등급쿠폰, 회원정보 등\n*광고홍보 : 매거진, 방송, 모델, 홍보 등\n*POS/전사 : POS, 영업정보시스템 전상 등\n*프로모션/사은품 : 멤버십데이, 빅세일, 프로모션 행사, 사은품 등";
+        }
     }
+}
+
+- (void)updateCategory
+{
+    __weak __typeof(&*self)weakSelf = self;
     
+    [[WebAPI sharedData] callAsyncWebAPIBlock:@"board/list"
+                                        param:nil
+                                   withMethod:@"GET"
+                                    withBlock:^(id resulte, NSError *error) {
+                                        
+                                        if( resulte )
+                                        {
+                                            id dic_Meta = [resulte objectForKey:@"meta"];
+                                            if( [dic_Meta isKindOfClass:[NSNull class]] )
+                                            {
+                                                dic_Meta = nil;
+                                            }
+                                            
+                                            NSInteger nCode = [[dic_Meta objectForKey_YM:@"errCode"] integerValue];
+                                            if( nCode == 0 )
+                                            {
+                                                NSArray *ar = [NSMutableArray arrayWithArray:[resulte objectForKey:@"data"]];
+                                                for( NSInteger i = 0; i < ar.count; i++ )
+                                                {
+                                                    NSDictionary *dic = ar[i];
+                                                    if( [[dic objectForKey_YM:@"name"] isEqualToString:self.str_ModifyTitle] )
+                                                    {
+                                                        weakSelf.dic_Category = dic;
+                                                        weakSelf.tf_Category.text = [weakSelf.dic_Category objectForKey:@"name"];
+                                                        break;
+                                                    }
+                                                }
+                                                
+                                            }
+                                        }
+                                        
+                                        [weakSelf.view updateConstraintsIfNeeded];
+                                        [weakSelf.view layoutIfNeeded];
+                                    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated

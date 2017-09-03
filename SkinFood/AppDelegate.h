@@ -25,14 +25,6 @@
 - (void)showLoginView;
 @end
 
-//1
-//2
-//3
-//4
-//5
-//04:40
-//enable bitcode YES
-
 
 //카카오 번들 이름 바꿔야 함 현재 com.emcast.Test2로 되어 있음
 //kr.skinfood.Switter

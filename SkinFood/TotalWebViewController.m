@@ -7,11 +7,23 @@
 //
 
 #import "TotalWebViewController.h"
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <AVFoundation/AVFoundation.h>
+#import "MWPhotoBrowser.h"
+#import "BSImagePickerController.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
-@interface TotalWebViewController () <UIWebViewDelegate>
+static const NSInteger kMaxImageCnt = 6;
+
+@interface TotalWebViewController () <UIWebViewDelegate, MWPhotoBrowserDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
     NSInteger nTotalPage;   //pdf 전용
 }
+@property (nonatomic, assign) BOOL isImageMode;
+@property (nonatomic, strong) NSMutableArray *ar_Photo;
+@property (nonatomic, strong) NSMutableArray *thumbs;
+@property (nonatomic, strong) BSImagePickerController *imagePicker;
+@property (nonatomic, strong) NSMutableArray *arM_Photo;
 @property (nonatomic, weak) IBOutlet UIWebView *webView;
 @property (nonatomic, weak) IBOutlet UILabel *lb_MainTitle;
 @end
@@ -368,6 +380,158 @@
             //	5	UPLOAD_IMAGES	uploadImages	count(number)		최대 선택 가능한 이미지 갯수	갤러리에서 선택한 이미지들을 서버에 업로드하고 response 를 웹뷰에 전달한다.
         }
         
+        
+        range = [jsString rangeOfString:@"IMAGE"];
+        if (range.location != NSNotFound)
+        {
+            jsString = [jsString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            jsString = [jsString stringByReplacingOccurrencesOfString:@"cmd?IMAGE<imgURL>" withString:@""];
+            jsString = [jsString stringByReplacingOccurrencesOfString:@"</imgURL>" withString:@""];
+            
+            NSArray *ar_Tmp = [jsString componentsSeparatedByString:@";"];
+            
+            NSMutableArray *arM_ImageList = [NSMutableArray arrayWithCapacity:ar_Tmp.count];
+            for( NSInteger i = 0; i < ar_Tmp.count; i++ )
+            {
+                [arM_ImageList addObject:ar_Tmp[i]];
+            }
+            
+            
+            
+            
+            
+            NSInteger nImageCnt = ar_Tmp.count;
+            self.thumbs = [NSMutableArray arrayWithCapacity:nImageCnt];
+            self.ar_Photo = [NSMutableArray arrayWithCapacity:nImageCnt];
+            
+            for( NSInteger i = 0; i < nImageCnt; i++ )
+            {
+                NSString *str_Url = ar_Tmp[i];
+                if( str_Url.length <= 0 || [str_Url hasPrefix:@"http"] == NO )
+                {
+                    continue;
+                }
+                [self.thumbs addObject:[MWPhoto photoWithURL:[NSURL URLWithString:str_Url]]];
+                [self.ar_Photo addObject:[MWPhoto photoWithURL:[NSURL URLWithString:str_Url]]];
+            }
+            
+            BOOL displayActionButton = NO;
+            BOOL displaySelectionButtons = NO;
+            BOOL displayNavArrows = YES;
+            BOOL enableGrid = YES;
+            BOOL startOnGrid = NO;
+            
+            MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+            browser.displayActionButton = displayActionButton;
+            browser.displayNavArrows = displayNavArrows;
+            browser.displaySelectionButtons = displaySelectionButtons;
+            browser.alwaysShowControls = displaySelectionButtons;
+            browser.zoomPhotosToFill = YES;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
+            browser.wantsFullScreenLayout = YES;
+#endif
+            browser.enableGrid = enableGrid;
+            browser.startOnGrid = startOnGrid;
+            browser.enableSwipeToDismiss = YES;
+            
+            self.isImageMode = YES;
+            
+            UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
+            nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentViewController:nc animated:YES completion:nil];
+            
+        }
+    
+        range = [jsString rangeOfString:@"CallCamera"];
+        if (range.location != NSNotFound)
+        {
+            [self.view endEditing:YES];
+            
+            if( self.arM_Photo )
+            {
+                [self.arM_Photo removeAllObjects];
+                self.arM_Photo = nil;
+            }
+            self.arM_Photo = [NSMutableArray array];
+            
+            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+            imagePickerController.delegate = self;
+            imagePickerController.allowsEditing = YES;
+            
+            if(IS_IOS8_OR_ABOVE)
+            {
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    [self presentViewController:imagePickerController animated:YES completion:nil];
+                }];
+            }
+            else
+            {
+                [self presentViewController:imagePickerController animated:YES completion:nil];
+            }
+            
+            return YES;
+        }
+        
+        range = [jsString rangeOfString:@"CallAlbum"];
+        if (range.location != NSNotFound)
+        {
+            [self.view endEditing:YES];
+            
+            if( self.arM_Photo )
+            {
+                [self.arM_Photo removeAllObjects];
+                self.arM_Photo = nil;
+            }
+            self.arM_Photo = [NSMutableArray array];
+            
+            self.imagePicker = [[BSImagePickerController alloc] init];
+            self.imagePicker.maximumNumberOfImages = kMaxImageCnt;
+            
+            [self presentImagePickerController:self.imagePicker
+                                      animated:YES
+                                    completion:nil
+                                        toggle:^(ALAsset *asset, BOOL select) {
+                                            if(select)
+                                            {
+                                                NSLog(@"Image selected");
+                                            }
+                                            else
+                                            {
+                                                NSLog(@"Image deselected");
+                                            }
+                                        }
+                                        cancel:^(NSArray *assets) {
+                                            NSLog(@"User canceled...!");
+                                            [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
+                                        }
+                                        finish:^(NSArray *assets) {
+                                            NSLog(@"User finished :)!");
+                                            [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
+                                            
+                                            for( NSInteger i = 0; i < assets.count; i++ )
+                                            {
+                                                ALAsset *asset = assets[i];
+                                                
+                                                ALAssetRepresentation *rep = [asset defaultRepresentation];
+                                                CGImageRef iref = [rep fullScreenImage];
+                                                if (iref)
+                                                {
+                                                    UIImage *image = [UIImage imageWithCGImage:iref];
+                                                    NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
+                                                    [self.arM_Photo addObject:imageData];
+                                                }
+                                            }
+                                            
+                                            if( self.arM_Photo && self.arM_Photo.count > 0 )
+                                            {
+                                                [self uploadImage];
+                                            }
+                                        }];
+            
+            return YES;
+        }
+
         NSLog(@"%@", jsString);
         
     }
@@ -375,6 +539,79 @@
     return YES;
 }
 
+
+- (void)uploadImage
+{
+    __weak __typeof(&*self)weakSelf = self;
+
+//    NSMutableDictionary *dicM_Params = [NSMutableDictionary dictionary];
+//    
+//    [dicM_Params setObject:@"IMAGE" forKey:@"type"];
+    
+    NSMutableDictionary *dicM_Image = [NSMutableDictionary dictionaryWithCapacity:self.arM_Photo.count];
+    for( NSInteger i = 0; i < self.arM_Photo.count; i++ )
+    {
+        NSData *imageData = self.arM_Photo[i];
+        NSString *str_Key = [NSString stringWithFormat:@"attachFiles%ld", i + 1];
+        [dicM_Image setObject:imageData forKey:str_Key];
+    }
+    
+    self.view.userInteractionEnabled = NO;
+    
+    [[WebAPI sharedData] imageUpload:@"common/attachment"
+                               param:nil
+                          withImages:dicM_Image
+                           withBlock:^(id resulte, NSError *error) {
+                               
+                               [GMDCircleLoader hide];
+                               
+                               if( resulte )
+                               {
+                                   NSArray *ar = [resulte objectForKey:@"data"];
+                                   if( ar.count > 0 )
+                                   {
+                                       //NSMutableDictionary *dicM_Contents = [NSMutableDictionary dictionaryWithDictionary:[dicM_Params objectForKey:@"contents"]];
+//                                       NSMutableDictionary *dicM_Contents = [NSMutableDictionary dictionary];
+//                                       [dicM_Contents setObject:ar forKey:@"images"];
+//                                       
+//                                       NSMutableDictionary *dicM_Type = [NSMutableDictionary dictionary];
+//                                       [dicM_Type setObject:@"이미지" forKey:@"text"];
+//                                       [dicM_Type setObject:@"IMAGE" forKey:@"value"];
+//                                       [dicM_Contents setObject:dicM_Type forKey:@"type"];
+//                                       
+//                                       [dicM_Params setObject:dicM_Contents forKey:@"contents"];
+//                                       [weakSelf sendTextContents:dicM_Params];
+                                   }
+                               }
+                               
+                               weakSelf.view.userInteractionEnabled = YES;
+                           }];
+}
+
+
+
+
+#pragma mark - MWPhotoBrowserDelegate
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser
+{
+    return _ar_Photo.count;
+}
+
+- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index
+{
+    if (index < _ar_Photo.count)
+        return [_ar_Photo objectAtIndex:index];
+    return nil;
+}
+
+- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index
+{
+    if (index < _thumbs.count)
+    {
+        return [_thumbs objectAtIndex:index];
+    }
+    return nil;
+}
 
 
 @end

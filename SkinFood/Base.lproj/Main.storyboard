@@ -21,7 +21,7 @@
         <scene sceneID="YGr-gA-3DI">
             <objects>
                 <navigationController storyboardIdentifier="LoginNavi" navigationBarHidden="YES" id="ZNT-Xf-4dt" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="kD6-5Q-RO9">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="kD6-5Q-RO9">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -288,7 +288,7 @@
             <objects>
                 <navigationController storyboardIdentifier="PopUpNavi" navigationBarHidden="YES" id="FuY-QW-56i" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Fuk-Qn-ecZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Fuk-Qn-ecZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -441,7 +441,7 @@
             <objects>
                 <navigationController storyboardIdentifier="LeftSideMenu" navigationBarHidden="YES" id="FQk-rQ-9bs" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="frV-8r-VXS">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="frV-8r-VXS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -477,7 +477,7 @@
             <objects>
                 <navigationController storyboardIdentifier="LessonMainNavi" navigationBarHidden="YES" id="174-dd-I9n" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" id="nPu-oz-CIW"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Gdm-Zq-jsV">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Gdm-Zq-jsV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2436,7 +2436,7 @@
                     <tabBarItem key="tabBarItem" title="" image="tab03_cafe_off.png" id="vNc-JW-1ug">
                         <inset key="imageInsets" minX="0.0" minY="8" maxX="0.0" maxY="-8"/>
                     </tabBarItem>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Alc-My-xXx">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Alc-My-xXx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2744,7 +2744,7 @@
                     <tabBarItem key="tabBarItem" title="" image="tab04_sns_off.png" id="fen-x4-xVX">
                         <inset key="imageInsets" minX="0.0" minY="8" maxX="0.0" maxY="-8"/>
                     </tabBarItem>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Nsq-4m-65F">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Nsq-4m-65F">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2958,7 +2958,7 @@
                                                             <color key="titleColor" red="0.1333333333" green="0.1333333333" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
                                                         <connections>
-                                                            <segue destination="wga-hA-tUe" kind="show" identifier="StudyStory" id="MQL-rv-uiT"/>
+                                                            <action selector="goStudyStory:" destination="fcq-9s-Hds" eventType="touchUpInside" id="kaY-vz-Bcr"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6zB-Vw-SB4">
@@ -2967,6 +2967,9 @@
                                                         <state key="normal" image="main_more_storybox.png">
                                                             <color key="titleColor" red="0.1333333333" green="0.1333333333" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="goStoryBox:" destination="fcq-9s-Hds" eventType="touchUpInside" id="sq4-uR-gHN"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CY1-4t-5Nt">
                                                         <rect key="frame" x="239.5" y="0.0" width="119.5" height="90"/>
@@ -2984,6 +2987,9 @@
                                                         <state key="normal" image="main_more_survay.png">
                                                             <color key="titleColor" red="0.1333333333" green="0.1333333333" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="goSurvey:" destination="fcq-9s-Hds" eventType="touchUpInside" id="HKS-eX-uie"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pYm-8H-v0u">
                                                         <rect key="frame" x="120" y="91" width="118.5" height="90"/>
@@ -2991,6 +2997,9 @@
                                                         <state key="normal" image="main_more_foodtag.png">
                                                             <color key="titleColor" red="0.1333333333" green="0.1333333333" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="goFoodTag:" destination="fcq-9s-Hds" eventType="touchUpInside" id="w7D-JC-qIm"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XXA-gI-tI2">
                                                         <rect key="frame" x="239.5" y="91" width="119.5" height="90"/>
@@ -2999,7 +3008,7 @@
                                                             <color key="titleColor" red="0.1333333333" green="0.1333333333" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
                                                         <connections>
-                                                            <segue destination="9C2-Ns-eGu" kind="show" id="3hr-bh-SMX"/>
+                                                            <action selector="goMyPage:" destination="fcq-9s-Hds" eventType="touchUpInside" id="Kw8-gr-SkB"/>
                                                         </connections>
                                                     </button>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1AK-5j-WCn">
@@ -3174,7 +3183,7 @@
                     <tabBarItem key="tabBarItem" title="" image="tab05_more_off.png" id="Ily-D7-On4">
                         <inset key="imageInsets" minX="0.0" minY="8" maxX="0.0" maxY="-8"/>
                     </tabBarItem>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="IIE-3l-Xq5">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="IIE-3l-Xq5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4039,8 +4048,8 @@
                         <outlet property="lc_ContentsHeight" destination="3wk-NP-mlm" id="xcf-T3-UlO"/>
                         <outlet property="lc_NotiHeight" destination="7hb-VS-A3y" id="d3Q-3y-bqh"/>
                         <outlet property="pg_Thumb" destination="jPo-xC-fDP" id="LcK-gT-0h0"/>
-                        <outlet property="sv_Main" destination="IfM-Bs-MHh" id="7jI-Tp-D7W"/>
-                        <outlet property="v_LastObj" destination="ZP4-Zf-bEL" id="Hin-V1-VBI"/>
+                        <outlet property="sv_MainView" destination="IfM-Bs-MHh" id="HOI-Aa-Ubb"/>
+                        <outlet property="v_Last" destination="ZP4-Zf-bEL" id="5WJ-f5-VEd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IGX-kc-GBc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4052,7 +4061,7 @@
             <objects>
                 <navigationController storyboardIdentifier="HomeMainNavi" navigationBarHidden="YES" id="Qcc-oi-hja" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" id="nZN-C3-OqV"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="73x-Jb-mmO">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="73x-Jb-mmO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4943,7 +4952,7 @@
         <scene sceneID="slx-0o-NBo">
             <objects>
                 <navigationController storyboardIdentifier="SnsWriteNavi" navigationBarHidden="YES" id="83c-Rd-dUR" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="C3L-7C-TE8">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="C3L-7C-TE8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6429,7 +6438,7 @@
         <scene sceneID="sVC-Mi-hl9">
             <objects>
                 <navigationController storyboardIdentifier="VideoPlayNavi" navigationBarHidden="YES" id="uxd-vN-oMj" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6h9-mg-CDc">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="6h9-mg-CDc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -6644,7 +6653,7 @@
                         <viewControllerLayoutGuide type="bottom" id="pQ7-Pd-tMV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1i7-da-6LL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H0e-oP-owB">
@@ -6770,13 +6779,13 @@
                                 </constraints>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pqT-xv-0Qr">
-                                <rect key="frame" x="0.0" y="102" width="375" height="516"/>
+                                <rect key="frame" x="0.0" y="102" width="375" height="565"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gUw-ff-66U">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="516"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="565"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="332" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DFm-th-ap7">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="516"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="565"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <prototypes>
                                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="StudyStoryCell" id="jJl-JJ-QqV" customClass="StudyStoryCell">
@@ -7158,7 +7167,7 @@
                                                 </connections>
                                             </tableView>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="332" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gaE-4e-FDl">
-                                                <rect key="frame" x="375" y="0.0" width="375" height="516"/>
+                                                <rect key="frame" x="375" y="0.0" width="375" height="565"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <prototypes>
                                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="StudyStoryCell" id="pHy-hF-mAC" customClass="StudyStoryCell">
@@ -8292,7 +8301,7 @@
             <objects>
                 <navigationController storyboardIdentifier="TotalWebViewNavi" navigationBarHidden="YES" id="upI-ju-w4N" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="7PU-oz-AlS">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="7PU-oz-AlS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
