@@ -129,16 +129,31 @@ static const NSInteger kMaxImageCnt = 3;
     else
     {
         self.lb_MainTitle.text = @"글쓰기";
-        
+        NSString *str_CateName = [self.dic_Category objectForKey_YM:@"name"];
         if( [[self.dic_Category objectForKey_YM:@"name"] isEqualToString:@"물류문의"] )
         {
             self.tv_Contents.text = @"매장명 : \n주문일자(출고일자) : \n물류코드 : \n제품명 : \n내용 : \n송장번호(선택) : \n";
         }
-        else if( [[self.dic_Category objectForKey_YM:@"name"] isEqualToString:@"개선해 주세요"] || [[self.dic_Category objectForKey_YM:@"name"] isEqualToString:@"개선해주세요"] )
-//            else
+        else if( [[self.dic_Category objectForKey_YM:@"name"] isEqualToString:@"궁금해요"] )
         {
-            self.tv_Contents.placeholder = @"*제품 문의 : 제품 효능, 특징, 성분, 출시요청 등\n*재고, 물류 : 품절, 입고 일정 등\n*디자인 : 용기디자인, 유니폼, 연출물, POP 등\n*고객관리/CRM : 멤버십, 등급쿠폰, 회원정보 등\n*광고홍보 : 매거진, 방송, 모델, 홍보 등\n*POS/전사 : POS, 영업정보시스템 전상 등\n*프로모션/사은품 : 멤버십데이, 빅세일, 프로모션 행사, 사은품 등";
+            self.tv_Contents.placeholder = @"· 제품문의 : 제품 효능, 특징, 성분, 출시요청 등\n· 생산일정/물류 : 품절, 입고 일정 등\n· 디자인 : 용기디자인, 유니폼, 연출물, POP 등\n· 고객관리/CRM : 멤버십, 등급쿠폰, 회원정보 등\n· 광고홍보 : 매거진, 방송, 모델, 홍보 등\n· POS/전산 : POS, 영업정보시스템 전산 등\n· 프로모션/행사 : 멤버십데이, 빅세일, 프로모션 행사, 사은품 등";
         }
+        else if( [str_CateName rangeOfString:@"엔젤"].location != NSNotFound )
+        {
+            if( [UIScreen mainScreen].bounds.size.height > 568.0f )
+            {
+                self.tv_Contents.placeholder = @"유관부서의 답변이 필요한 질문은 '궁금해요' 게시판을 이용해 주세요";
+            }
+            else
+            {
+                self.tv_Contents.placeholder = @"유관부서의 답변이 필요한 질문은 '궁금해요' 게시판을\n이용해 주세요";
+            }
+            
+        }
+//        else if( [[self.dic_Category objectForKey_YM:@"name"] isEqualToString:@"푸드엔젤지식In"] )
+//        {
+//            self.tv_Contents.placeholder = @"유관부서의 답변이 필요한 질문은 '궁금해요' 게시판을 이용해 주세요.";
+//        }
     }
 }
 
@@ -166,7 +181,7 @@ static const NSInteger kMaxImageCnt = 3;
                                                 for( NSInteger i = 0; i < ar.count; i++ )
                                                 {
                                                     NSDictionary *dic = ar[i];
-                                                    if( [[dic objectForKey_YM:@"name"] isEqualToString:self.str_ModifyTitle] )
+                                                    if( [[dic objectForKey_YM:@"identifier"] isEqualToString:self.str_ModifyTitle] )
                                                     {
                                                         weakSelf.dic_Category = dic;
                                                         weakSelf.tf_Category.text = [weakSelf.dic_Category objectForKey:@"name"];

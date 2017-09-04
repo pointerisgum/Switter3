@@ -187,6 +187,7 @@ static UIView *v_Indi = nil;
 {
     [UIView animateWithDuration:0.3f
                      animations:^{
+                         
                          view.transform = CGAffineTransformMakeRotation(degreesToRadian(radian));
                      }];
 }

@@ -25,8 +25,8 @@
     
 //    self.tf_Id.text = @"skw815@emcast.com";
 //    self.tf_Pw.text = @"skw815@emcast.com";
-    self.tf_Id.text = @"ios";
-    self.tf_Pw.text = @"password1";
+//    self.tf_Id.text = @"ios";
+//    self.tf_Pw.text = @"password1";
 }
 
 - (void)viewDidLayoutSubviews
@@ -110,20 +110,7 @@
                                    otherButtonTitles:@[@"확인"]
                                             tapBlock:^(UIAlertController *controller, UIAlertAction *action, NSInteger buttonIndex){
                                                 
-                                                if (buttonIndex == controller.cancelButtonIndex)
-                                                {
-                                                    NSLog(@"Cancel Tapped");
-                                                }
-                                                else if (buttonIndex == controller.destructiveButtonIndex)
-                                                {
-                                                    NSLog(@"Delete Tapped");
-                                                }
-                                                else if (buttonIndex >= controller.firstOtherButtonIndex)
-                                                {
-                                                    NSLog(@"Other Button Index %ld", (long)buttonIndex - controller.firstOtherButtonIndex);
-                                                }
                                             }];
-
         return;
     }
     
@@ -132,25 +119,12 @@
         [UIAlertController showAlertInViewController:self
                                            withTitle:@""
                                              message:@"비밀번호를 입력해 주세요"
-                                   cancelButtonTitle:@"확인"
-                              destructiveButtonTitle:@""
-                                   otherButtonTitles:nil
+                                   cancelButtonTitle:nil
+                              destructiveButtonTitle:nil
+                                   otherButtonTitles:@[@"확인"]
                                             tapBlock:^(UIAlertController *controller, UIAlertAction *action, NSInteger buttonIndex){
                                                 
-                                                if (buttonIndex == controller.cancelButtonIndex)
-                                                {
-                                                    NSLog(@"Cancel Tapped");
-                                                }
-                                                else if (buttonIndex == controller.destructiveButtonIndex)
-                                                {
-                                                    NSLog(@"Delete Tapped");
-                                                }
-                                                else if (buttonIndex >= controller.firstOtherButtonIndex)
-                                                {
-                                                    NSLog(@"Other Button Index %ld", (long)buttonIndex - controller.firstOtherButtonIndex);
-                                                }
                                             }];
-        
         return;
     }
     

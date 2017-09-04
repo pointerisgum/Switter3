@@ -25,6 +25,6 @@
 - (void)showLoginView;
 @end
 
-
+//com.emcast.Test2
 //카카오 번들 이름 바꿔야 함 현재 com.emcast.Test2로 되어 있음
 //kr.skinfood.Switter

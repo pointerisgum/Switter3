@@ -514,8 +514,9 @@
     
     //이은숙 점주
     NSString *str_RegisterName = [dic_Register objectForKey_YM:@"name"];
-    NSString *str_DutyName = [dic_Register objectForKey_YM:@"dutyName"];
-    cell.lb_Name.text = [NSString stringWithFormat:@"%@ %@", str_RegisterName, str_DutyName];
+    NSString *str_DutyName = [dic_Register objectForKey_YM:@"responsibilityName"];
+    cell.lb_Name.text = str_RegisterName;
+    cell.lb_Position.text = str_DutyName;
     
     //[주목!주목]
     id category = [self.dic_Info objectForKey:@"category"];
@@ -831,13 +832,15 @@
     //성신여대점 | 2017.03.17
     NSString *str_StoreName = [dic_Register objectForKey_YM:@"storeName"];
     TimeStruct *time = [Util makeTimeWithTimeStamp:[[dic_Register objectForKey_YM:@"time"] doubleValue]];
-    cell.lb_Store.text = [NSString stringWithFormat:@"%@ | %04ld.%02ld.%02ld", str_StoreName, time.nYear, time.nMonth, time.nDay];
-    
+    cell.lb_Store.text = str_StoreName;
+    cell.lb_Date.text = [NSString stringWithFormat:@"%04ld.%02ld.%02ld", time.nYear, time.nMonth, time.nDay];
+
     //이은숙 점주
     NSString *str_RegisterName = [dic_Register objectForKey_YM:@"name"];
-    NSString *str_DutyName = [dic_Register objectForKey_YM:@"dutyName"];
-    cell.lb_Name.text = [NSString stringWithFormat:@"%@ %@", str_RegisterName, str_DutyName];
- 
+    NSString *str_DutyName = [dic_Register objectForKey_YM:@"responsibilityName"];
+    cell.lb_Name.text = str_RegisterName;
+    cell.lb_Position.text = str_DutyName;
+    
     cell.lb_Contents.text = [dic_Main objectForKey_YM:@"contents"];
     
     cell.btn_Info.tag = indexPath.row - 1;
@@ -1151,7 +1154,7 @@
                                        UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:vc];
                                        navi.navigationBarHidden = YES;
                                        vc.isModifyMode = YES;
-                                       vc.str_ModifyTitle = self.str_Title;
+                                       vc.str_ModifyTitle = weakSelf.str_FoodIdenti;
                                        vc.dic_Info = self.dic_Info;
                                        [vc setCompletionAddBlock:^(id completeResult) {
                                            

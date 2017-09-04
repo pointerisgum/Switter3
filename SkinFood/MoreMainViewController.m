@@ -28,6 +28,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *iv_User;
 @property (nonatomic, weak) IBOutlet UILabel *lb_Store;
 @property (nonatomic, weak) IBOutlet UILabel *lb_Name;
+@property (nonatomic, weak) IBOutlet UILabel *lb_DutyName;
 @property (nonatomic, weak) IBOutlet UIView *v_TopList;
 @property (nonatomic, weak) IBOutlet UITableView *tbv_List;
 @end
@@ -129,9 +130,8 @@
                                                 }
                                                 
                                                 weakSelf.lb_Store.text = [dic_Data objectForKey_YM:@"storeName"];
-                                                weakSelf.lb_Name.text = [NSString stringWithFormat:@"%@ %@",
-                                                                         [dic_Data objectForKey_YM:@"name"],
-                                                                         [dic_Data objectForKey_YM:@"dutyName"]];
+                                                weakSelf.lb_Name.text = [NSString stringWithFormat:@"%@", [dic_Data objectForKey_YM:@"name"]];
+                                                weakSelf.lb_DutyName.text = [dic_Data objectForKey_YM:@"responsibilityName"];
                                             }
                                             else
                                             {

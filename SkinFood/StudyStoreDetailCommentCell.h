@@ -12,6 +12,8 @@
 @property (nonatomic, weak) IBOutlet UIImageView *iv_User;
 @property (nonatomic, weak) IBOutlet UILabel *lb_Store;
 @property (nonatomic, weak) IBOutlet UILabel *lb_Name;
+@property (nonatomic, weak) IBOutlet UILabel *lb_Position;
+@property (nonatomic, weak) IBOutlet UILabel *lb_Date;
 @property (nonatomic, weak) IBOutlet UILabel *lb_Contents;
 @property (nonatomic, weak) IBOutlet UIButton *btn_Info;
 @end

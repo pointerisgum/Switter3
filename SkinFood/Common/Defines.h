@@ -74,11 +74,27 @@ static const NSInteger kNaviTitleTag = 5613;
 
 #define NSEUCKREncoding (-2147481280)
 
+
+
+
+//실섭
 //#define kBaseUrl                @"http://switter.theskinfood.com" //실섭
-#define kBaseUrl                  @"http://52.78.18.80:9180"        //개발섭
-#define kImageBaseUrl             @"http://52.78.18.80:9180"        //개발섭
-#define kBaseWebUrl               @"http://52.78.18.80/switter/m"        //개발섭
+#define kBaseUrl                  @"http://54.92.105.200:9180"                 //실섭
+#define kImageBaseUrl             @"http://54.92.105.200:9180"                 //실섭
+#define kBaseWebUrl               @"http://switter.theskinfood.com/m"       //실섭
 //#define kLocal                  @"http://112.216.0.179:8284"    //Local
+
+
+//개발
+//#define kBaseUrl                  @"http://52.78.18.80:9180"            //개발섭
+//#define kImageBaseUrl             @"http://52.78.18.80:9180"            //개발섭
+//#define kBaseWebUrl               @"http://52.78.18.80/switter/m"       //개발섭
+
+
+
+
+
+
 
 //AppStoreUrl
 #define kAppStoreURL            @"https://itunes.apple.com/kr/app/seuwiteo-switter/id973499825?mt=8"

@@ -148,8 +148,7 @@
                                                 for( NSInteger i = 0; i < ar_List.count; i++ )
                                                 {
                                                     NSDictionary *dic = ar_List[i];
-                                                    if( [[dic objectForKey_YM:@"identifier"] isEqualToString:@"SNS"] ||
-                                                       [[dic objectForKey_YM:@"identifier"] isEqualToString:@"sns"] )
+                                                    if( [[dic objectForKey_YM:@"identifier"] isEqualToString:@"SNS_COMMENT"] )
                                                     {
                                                         NSInteger nBadgeCnt = [[dic objectForKey_YM:@"count"] integerValue];
                                                         if( nBadgeCnt > 0 )

@@ -111,13 +111,13 @@
     if( isUnLimited )
     {
         //무제한 학습
-        cell.lb_ReqDate.text = [NSString stringWithFormat:@"%04ld.%02ld.%02ld~무제한",
+        cell.lb_StudyDate.text = [NSString stringWithFormat:@"%04ld.%02ld.%02ld~무제한",
                                 startTime.nYear, startTime.nMonth, startTime.nDay];
     }
     else
     {
         TimeStruct *endTime =  [Util makeTimeWithTimeStamp:[[dic_Learning objectForKey:@"end"] doubleValue]];
-        cell.lb_ReqDate.text = [NSString stringWithFormat:@"%04ld.%02ld.%02ld~%04ld.%02ld.%02ld",
+        cell.lb_StudyDate.text = [NSString stringWithFormat:@"%04ld.%02ld.%02ld~%04ld.%02ld.%02ld",
                                 startTime.nYear, startTime.nMonth, startTime.nDay,
                                 endTime.nYear, endTime.nMonth, endTime.nDay];
     }

@@ -30,6 +30,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *lb_SubCategory;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *lc_SubCateHeight;
 @property (nonatomic, weak) IBOutlet UIButton *btn_Write;
+@property (nonatomic, weak) IBOutlet UILabel *lb_GuideText;
 @end
 
 @implementation FoodCafeMainViewController
@@ -78,7 +79,7 @@
 
 - (void)moveToCategory:(NSString *)aMoveTitle
 {
-    __weak __typeof(&*self)weakSelf = self;
+//    __weak __typeof(&*self)weakSelf = self;
 
     isMoveCategoty = YES;
     str_MoveCategoryName = aMoveTitle;
@@ -95,8 +96,7 @@
             self.dic_SelectedCategory = dic;
             [self updateList];
             [self.cv_Category reloadData];
-            self.cv_Category.contentOffset = CGPointMake(100 * weakSelf.arM_Category.count, 0);
-            
+            self.cv_Category.contentOffset = CGPointMake(36 * i, 0);
             break;
         }
     }
@@ -328,6 +328,34 @@
     return cell;
 }
 
+- (void)updateGuideText:(NSString *)aMsg
+{
+    if( [aMsg rangeOfString:@"공지"].location != NSNotFound )
+    {
+        self.lb_GuideText.text = @"스위터 이벤트, 브랜드 소식,\n교육 관련 공지를 확인하는 공간입니다.";
+    }
+    else if( [aMsg rangeOfString:@"물류"].location != NSNotFound )
+    {
+        self.lb_GuideText.text = @"배송문의 (대한통운) 02-2657-2438, 7736\n매장 주문 문의 (PO팀) 02-597-4191 (ARS 2번-1번)\n연출물 문의 (디자인팀) 02-597-4191 (ARS 2번-2번)";
+    }
+    else if( [aMsg rangeOfString:@"엔젤"].location != NSNotFound )
+    {
+        self.lb_GuideText.text = @"제품 혹은 DP에 대한 궁금증을 매장의 푸드엔젤끼리 자유롭게 질문하고 답변하는 열린 공간입니다.";
+    }
+    else if( [aMsg rangeOfString:@"궁금"].location != NSNotFound )
+    {
+        self.lb_GuideText.text = @"질문, 건의 등을 공유하는 공간이며, 카테고리를 정확히 선택해 주셔야 유관 부서에 빠른 알림이 가능합니다.";
+    }
+    else if( [aMsg rangeOfString:@"칭찬"].location != NSNotFound )
+    {
+        self.lb_GuideText.text = @"매장의 칭찬 사례, 서비스 우수 매장 등을 공유하는 공간입니다.";
+    }
+    else if( [aMsg rangeOfString:@"학습자료"].location != NSNotFound )
+    {
+        self.lb_GuideText.text = @"제품, 성분 및 효능, 세일즈, 서비스 등의 학습자료를 확인하는 공간입니다.";
+    }
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if( collectionView == self.cv_Category )
@@ -343,6 +371,10 @@
         NSDictionary *dic = self.arM_Category[indexPath.row];
         
         self.dic_SelectedCategory = dic;
+        
+        NSString *str_CateName = [self.dic_SelectedCategory objectForKey:@"name"];
+        [self updateGuideText:str_CateName];
+        
         [self.cv_Category reloadData];
         [self updateList];
     }

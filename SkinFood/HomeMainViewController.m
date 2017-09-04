@@ -84,22 +84,22 @@
 
     self.ar_Colors = [Common getCategoryColors];
     
-    NSTimer *tm = [NSTimer scheduledTimerWithTimeInterval:0.2f target:self selector:@selector(onReSetLayOut:) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:0.2f target:self selector:@selector(onReSetLayOut:) userInfo:nil repeats:YES];
 }
 
 - (void)onReSetLayOut:(NSTimer *)tm
 {
     static NSInteger nTimerCnt = 0;
     
-    if( nTimerCnt > 100 )
+    if( nTimerCnt > 10 )
     {
         nTimerCnt = 0;
         [tm invalidate];
         tm = nil;
     }
     
-    self.sv_MainView.contentSize = CGSizeMake(self.sv_MainView.frame.size.width, self.v_Last.frame.origin.y + self.v_Last.frame.size.height + 20);
-    self.lc_ContentsHeight.constant = self.sv_MainView.contentSize.height;
+    self.sv_MainView.contentSize = CGSizeMake(self.sv_MainView.frame.size.width, 1069.f);
+    self.lc_ContentsHeight.constant = 1069.f;
 
     nTimerCnt++;
 }
@@ -209,7 +209,7 @@
                                         @"1", @"page",
                                         @"5", @"size",
                                         @"LATELY_UPDATE", @"sorting",
-                                        @"CURRENT", @"type",
+                                        @"INCOMPLETE", @"type",
                                         nil];
 
     [[WebAPI sharedData] callAsyncWebAPIBlock:@"learn/degree"
@@ -659,53 +659,115 @@
     {
         NSDictionary *dic_Main = self.arM_SNS[indexPath.row];
         NSDictionary *dic_Contents = [dic_Main objectForKey:@"contents"];
-        NSArray *ar_Images = [dic_Contents objectForKey:@"images"];
-        if( ar_Images.count > 0 )
+
+        NSString *str_Type = @"";
+        NSDictionary *dic_Type = [dic_Contents objectForKey_YM:@"type"];
+        if( [dic_Type isKindOfClass:[NSDictionary class]] == NO )
         {
-            //이미지가 있을 경우 이미지 표현
-            static NSString *identifier = @"HomeSnsImageCell";
-            HomeSnsImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-            NSDictionary *dic_ImageInfo = [ar_Images firstObject];
-            NSString *str_ImageUrl = [dic_ImageInfo objectForKey_YM:@"resourceUri"];
-            [cell.iv_Thumb sd_setImageWithURL:[NSURL URLWithString:str_ImageUrl] placeholderImage:BundleImage(@"")];
-            
-            NSDictionary *dic_Modifier = [dic_Main objectForKey:@"modifierInfo"];
-            NSDictionary *dic_Register = [dic_Modifier objectForKey:@"register"];
-            NSDictionary *dic_Profile = [dic_Register objectForKey:@"profile"];
-            id profile = [dic_Register objectForKey:@"profile"];
-            if( [profile isKindOfClass:[NSNull class]] == NO )
-            {
-                NSString *str_UserImageUrl = [dic_Profile objectForKey_YM:@"resourceUri"];
-                [cell.iv_User sd_setImageWithURL:[NSURL URLWithString:str_UserImageUrl] placeholderImage:BundleImage(@"no_image_white.png")];
-                cell.lb_SubTitle1.text = [dic_Register objectForKey_YM:@"brandName"];
-                cell.lb_SubTitle2.text = [NSString stringWithFormat:@"%@ %@", [dic_Register objectForKey_YM:@"name"], [dic_Register objectForKey_YM:@"dutyName"]];
-            }
-            
-            return cell;
+            str_Type = @"";
         }
         else
         {
-            //이미지가 없을 경우 내용 표현
-            static NSString *identifier = @"HomeSnsTextCell";
-            HomeSnsTextCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-            cell.lb_Title.text = [dic_Contents objectForKey_YM:@"body"];
-            
-            NSDictionary *dic_Modifier = [dic_Main objectForKey:@"modifierInfo"];
-            NSDictionary *dic_Register = [dic_Modifier objectForKey:@"register"];
-            id profile = [dic_Register objectForKey:@"profile"];
-            if( [profile isKindOfClass:[NSNull class]] == NO )
-            {
-                NSDictionary *dic_Profile = [dic_Register objectForKey:@"profile"];
-                NSString *str_UserImageUrl = [dic_Profile objectForKey_YM:@"resourceUri"];
-                [cell.iv_User sd_setImageWithURL:[NSURL URLWithString:str_UserImageUrl] placeholderImage:BundleImage(@"no_image_white.png")];
-                cell.lb_SubTitle1.text = [dic_Register objectForKey_YM:@"brandName"];
-                cell.lb_SubTitle2.text = [NSString stringWithFormat:@"%@ %@", [dic_Register objectForKey_YM:@"name"], [dic_Register objectForKey_YM:@"dutyName"]];
-            }
+            str_Type = [dic_Type objectForKey_YM:@"value"];
+        }
 
-            return cell;
+        if( [str_Type isEqualToString:@"IMAGE"] )
+        {
+            NSArray *ar_Images = [dic_Contents objectForKey:@"images"];
+            if( ar_Images.count > 0 )
+            {
+                //이미지가 있을 경우 이미지 표현
+                static NSString *identifier = @"HomeSnsImageCell";
+                HomeSnsImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+                NSDictionary *dic_ImageInfo = [ar_Images firstObject];
+                NSString *str_ImageUrl = [dic_ImageInfo objectForKey_YM:@"resourceUri"];
+                [cell.iv_Thumb sd_setImageWithURL:[NSURL URLWithString:str_ImageUrl] placeholderImage:BundleImage(@"")];
+                
+                NSDictionary *dic_Modifier = [dic_Main objectForKey:@"modifierInfo"];
+                NSDictionary *dic_Register = [dic_Modifier objectForKey:@"register"];
+                NSDictionary *dic_Profile = [dic_Register objectForKey:@"profile"];
+                id profile = [dic_Register objectForKey:@"profile"];
+                if( [profile isKindOfClass:[NSNull class]] == NO )
+                {
+                    NSString *str_UserImageUrl = [dic_Profile objectForKey_YM:@"resourceUri"];
+                    [cell.iv_User sd_setImageWithURL:[NSURL URLWithString:str_UserImageUrl] placeholderImage:BundleImage(@"no_image_white.png")];
+                }
+                
+                cell.lb_SubTitle1.text = [dic_Register objectForKey_YM:@"storeName"];
+                cell.lb_SubTitle2.text = [NSString stringWithFormat:@"%@ %@", [dic_Register objectForKey_YM:@"name"], [dic_Register objectForKey_YM:@"responsibilityName"]];
+                
+                return cell;
+            }
+        }
+        else if( [str_Type isEqualToString:@"VIDEO"] )
+        {
+            id video = [dic_Contents objectForKey:@"video"];
+            if( [video isKindOfClass:[NSNull class]] == NO )
+            {
+                NSDictionary *dic_Video = [dic_Contents objectForKey:@"video"];
+                
+                NSString *str_ThumbImageUrl = @"";
+                NSArray *ar_Thumb = [dic_Video objectForKey:@"subFileResourceUri"];
+                if( ar_Thumb.count > 0 )
+                {
+                    str_ThumbImageUrl = [ar_Thumb firstObject];
+                }
+                else
+                {
+                    str_ThumbImageUrl = @"noimage2.png";
+                }
+
+                static NSString *identifier = @"HomeSnsImageCell";
+                HomeSnsImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+                [cell.iv_Thumb sd_setImageWithURL:[NSURL URLWithString:str_ThumbImageUrl] placeholderImage:BundleImage(@"noimage2.png")];
+                
+                NSDictionary *dic_Modifier = [dic_Main objectForKey:@"modifierInfo"];
+                NSDictionary *dic_Register = [dic_Modifier objectForKey:@"register"];
+                NSDictionary *dic_Profile = [dic_Register objectForKey:@"profile"];
+                id profile = [dic_Register objectForKey:@"profile"];
+                if( [profile isKindOfClass:[NSNull class]] == NO )
+                {
+                    NSString *str_UserImageUrl = [dic_Profile objectForKey_YM:@"resourceUri"];
+                    [cell.iv_User sd_setImageWithURL:[NSURL URLWithString:str_UserImageUrl] placeholderImage:BundleImage(@"no_image_white.png")];
+                }
+                
+                cell.lb_SubTitle1.text = [dic_Register objectForKey_YM:@"storeName"];
+                cell.lb_SubTitle2.text = [NSString stringWithFormat:@"%@ %@", [dic_Register objectForKey_YM:@"name"], [dic_Register objectForKey_YM:@"responsibilityName"]];
+
+                return cell;
+            }
         }
         
-        return nil;
+        //이미지가 없을 경우 내용 표현
+        static NSString *identifier = @"HomeSnsTextCell";
+        HomeSnsTextCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+        cell.lb_Title.text = [dic_Contents objectForKey_YM:@"body"];
+        
+        NSDictionary *dic_Modifier = [dic_Main objectForKey:@"modifierInfo"];
+        NSDictionary *dic_Register = [dic_Modifier objectForKey:@"register"];
+        id profile = [dic_Register objectForKey:@"profile"];
+        if( [profile isKindOfClass:[NSNull class]] == NO )
+        {
+            NSDictionary *dic_Profile = [dic_Register objectForKey:@"profile"];
+            NSString *str_UserImageUrl = [dic_Profile objectForKey_YM:@"resourceUri"];
+            [cell.iv_User sd_setImageWithURL:[NSURL URLWithString:str_UserImageUrl] placeholderImage:BundleImage(@"no_image_white.png")];
+        }
+        
+        cell.lb_SubTitle1.text = [dic_Register objectForKey_YM:@"storeName"];
+        
+        
+        NSString *str_Name = [dic_Register objectForKey_YM:@"name"];
+        NSString *str_Durty = [dic_Register objectForKey_YM:@"responsibilityName"];
+        NSString *str_String = [NSString stringWithFormat:@"%@ %@", str_Name, str_Durty];
+        UIFont *font1 = [UIFont fontWithName:@"Helvetica" size:12.0];
+        UIFont *font2 = [UIFont fontWithName:@"Helvetica" size:10.0];
+        
+        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:str_String];
+        [attrString setAttributes:@{ NSFontAttributeName: font1 } range:NSMakeRange(0, str_Name.length + 1)];
+        [attrString setAttributes:@{ NSFontAttributeName: font2 } range:NSMakeRange(str_Name.length + 1, str_Durty.length)];
+        cell.lb_SubTitle2.attributedText = attrString;
+        
+        return cell;
     }
     else if( collectionView == self.cv_Compliment )
     {

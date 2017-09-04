@@ -13,7 +13,7 @@
 #import "BSImagePickerController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
-static const NSInteger kMaxImageCnt = 6;
+static const NSInteger kMaxImageCnt = 1;
 
 @interface TotalWebViewController () <UIWebViewDelegate, MWPhotoBrowserDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
@@ -374,10 +374,64 @@ static const NSInteger kMaxImageCnt = 6;
             //	4	DOWNLOAD	download	url(string)		다운로드 대상 URL(ex: http://example.com/asdf.pdf)	전달된 URL 의 파일을 다운로드 한다.
         }
         
-        range = [jsString rangeOfString:@"UPLOAD_IMAGES"];
+        range = [jsString rangeOfString:@"UPLOAD_PROFILE"];
         if (range.location != NSNotFound)
         {
             //	5	UPLOAD_IMAGES	uploadImages	count(number)		최대 선택 가능한 이미지 갯수	갤러리에서 선택한 이미지들을 서버에 업로드하고 response 를 웹뷰에 전달한다.
+            [self.view endEditing:YES];
+            
+            if( self.arM_Photo )
+            {
+                [self.arM_Photo removeAllObjects];
+                self.arM_Photo = nil;
+            }
+            self.arM_Photo = [NSMutableArray array];
+            
+            self.imagePicker = [[BSImagePickerController alloc] init];
+            self.imagePicker.maximumNumberOfImages = kMaxImageCnt;
+            
+            [self presentImagePickerController:self.imagePicker
+                                      animated:YES
+                                    completion:nil
+                                        toggle:^(ALAsset *asset, BOOL select) {
+                                            if(select)
+                                            {
+                                                NSLog(@"Image selected");
+                                            }
+                                            else
+                                            {
+                                                NSLog(@"Image deselected");
+                                            }
+                                        }
+                                        cancel:^(NSArray *assets) {
+                                            NSLog(@"User canceled...!");
+                                            [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
+                                        }
+                                        finish:^(NSArray *assets) {
+                                            NSLog(@"User finished :)!");
+                                            [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
+                                            
+                                            for( NSInteger i = 0; i < assets.count; i++ )
+                                            {
+                                                ALAsset *asset = assets[i];
+                                                
+                                                ALAssetRepresentation *rep = [asset defaultRepresentation];
+                                                CGImageRef iref = [rep fullScreenImage];
+                                                if (iref)
+                                                {
+                                                    UIImage *image = [UIImage imageWithCGImage:iref];
+                                                    NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
+                                                    [self.arM_Photo addObject:imageData];
+                                                }
+                                            }
+                                            
+                                            if( self.arM_Photo && self.arM_Photo.count > 0 )
+                                            {
+                                                [self uploadImage];
+                                            }
+                                        }];
+            
+            return YES;
         }
         
         
@@ -476,60 +530,6 @@ static const NSInteger kMaxImageCnt = 6;
         range = [jsString rangeOfString:@"CallAlbum"];
         if (range.location != NSNotFound)
         {
-            [self.view endEditing:YES];
-            
-            if( self.arM_Photo )
-            {
-                [self.arM_Photo removeAllObjects];
-                self.arM_Photo = nil;
-            }
-            self.arM_Photo = [NSMutableArray array];
-            
-            self.imagePicker = [[BSImagePickerController alloc] init];
-            self.imagePicker.maximumNumberOfImages = kMaxImageCnt;
-            
-            [self presentImagePickerController:self.imagePicker
-                                      animated:YES
-                                    completion:nil
-                                        toggle:^(ALAsset *asset, BOOL select) {
-                                            if(select)
-                                            {
-                                                NSLog(@"Image selected");
-                                            }
-                                            else
-                                            {
-                                                NSLog(@"Image deselected");
-                                            }
-                                        }
-                                        cancel:^(NSArray *assets) {
-                                            NSLog(@"User canceled...!");
-                                            [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
-                                        }
-                                        finish:^(NSArray *assets) {
-                                            NSLog(@"User finished :)!");
-                                            [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
-                                            
-                                            for( NSInteger i = 0; i < assets.count; i++ )
-                                            {
-                                                ALAsset *asset = assets[i];
-                                                
-                                                ALAssetRepresentation *rep = [asset defaultRepresentation];
-                                                CGImageRef iref = [rep fullScreenImage];
-                                                if (iref)
-                                                {
-                                                    UIImage *image = [UIImage imageWithCGImage:iref];
-                                                    NSData *imageData = UIImageJPEGRepresentation(image, 0.5);
-                                                    [self.arM_Photo addObject:imageData];
-                                                }
-                                            }
-                                            
-                                            if( self.arM_Photo && self.arM_Photo.count > 0 )
-                                            {
-                                                [self uploadImage];
-                                            }
-                                        }];
-            
-            return YES;
         }
 
         NSLog(@"%@", jsString);
@@ -570,17 +570,14 @@ static const NSInteger kMaxImageCnt = 6;
                                    NSArray *ar = [resulte objectForKey:@"data"];
                                    if( ar.count > 0 )
                                    {
-                                       //NSMutableDictionary *dicM_Contents = [NSMutableDictionary dictionaryWithDictionary:[dicM_Params objectForKey:@"contents"]];
-//                                       NSMutableDictionary *dicM_Contents = [NSMutableDictionary dictionary];
-//                                       [dicM_Contents setObject:ar forKey:@"images"];
-//                                       
-//                                       NSMutableDictionary *dicM_Type = [NSMutableDictionary dictionary];
-//                                       [dicM_Type setObject:@"이미지" forKey:@"text"];
-//                                       [dicM_Type setObject:@"IMAGE" forKey:@"value"];
-//                                       [dicM_Contents setObject:dicM_Type forKey:@"type"];
-//                                       
-//                                       [dicM_Params setObject:dicM_Contents forKey:@"contents"];
-//                                       [weakSelf sendTextContents:dicM_Params];
+//                                       NSDictionary *dic = [ar firstObject];
+                                       NSData * jsonData = [NSJSONSerialization dataWithJSONObject:ar options:0 error:&error];
+                                       NSString * str_Json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                                       
+                                       NSString *scriptString = [NSString stringWithFormat:@"changeProfile(%@);", str_Json];
+                                       [self.webView stringByEvaluatingJavaScriptFromString:scriptString];
+                                       
+//                                       [self uploadProfile:str_Json];
                                    }
                                }
                                

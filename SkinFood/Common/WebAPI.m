@@ -924,12 +924,14 @@ typedef void (^WebSuccessBlock)(id resulte, NSError *error);
             {
                 isNowShowPopup = YES;
 
-//                NSString *str_ErrorJson = [error localizedRecoverySuggestion];
-//                SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
-//                id dicM_Error = [jsonParser objectWithString:str_ErrorJson];
-//                
-//                NSLog(@"%@", [dicM_Error objectForKey:@"meta"]);
-
+                NSString *str_ErrorJson = [error localizedRecoverySuggestion];
+                SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+                id dicM_Error = [jsonParser objectWithString:str_ErrorJson];
+                
+                NSDictionary *dic_Meta = [dicM_Error objectForKey:@"meta"];
+                NSString *str_ErrMsg = [dic_Meta objectForKey:@"errMsg"];
+                [Util showToast:str_ErrMsg];
+//
 //#ifdef DEBUG
 //                
 //#else
@@ -1026,6 +1028,13 @@ typedef void (^WebSuccessBlock)(id resulte, NSError *error);
             {
                 isNowShowPopup = YES;
 
+                NSString *str_ErrorJson = [error localizedRecoverySuggestion];
+                SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+                id dicM_Error = [jsonParser objectWithString:str_ErrorJson];
+                
+                NSDictionary *dic_Meta = [dicM_Error objectForKey:@"meta"];
+                NSString *str_ErrMsg = [dic_Meta objectForKey:@"errMsg"];
+                [Util showToast:str_ErrMsg];
 
 //#ifdef DEBUG
 //                
@@ -1107,6 +1116,14 @@ typedef void (^WebSuccessBlock)(id resulte, NSError *error);
             if( 1 )
             {
                 isNowShowPopup = YES;
+
+                NSString *str_ErrorJson = [error localizedRecoverySuggestion];
+                SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+                id dicM_Error = [jsonParser objectWithString:str_ErrorJson];
+                
+                NSDictionary *dic_Meta = [dicM_Error objectForKey:@"meta"];
+                NSString *str_ErrMsg = [dic_Meta objectForKey:@"errMsg"];
+                [Util showToast:str_ErrMsg];
 
 //                NSString *str_ErrorJson = [error localizedRecoverySuggestion];
 //                SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
@@ -1194,6 +1211,14 @@ typedef void (^WebSuccessBlock)(id resulte, NSError *error);
             if( 1 )
             {
                 isNowShowPopup = YES;
+
+                NSString *str_ErrorJson = [error localizedRecoverySuggestion];
+                SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
+                id dicM_Error = [jsonParser objectWithString:str_ErrorJson];
+                
+                NSDictionary *dic_Meta = [dicM_Error objectForKey:@"meta"];
+                NSString *str_ErrMsg = [dic_Meta objectForKey:@"errMsg"];
+                [Util showToast:str_ErrMsg];
 
 //                NSString *str_ErrorJson = [error localizedRecoverySuggestion];
 //                SBJsonParser *jsonParser = [[SBJsonParser alloc] init];

@@ -264,9 +264,10 @@
 
     //이은숙 점주
     NSString *str_RegisterName = [dic_Register objectForKey_YM:@"name"];
-    NSString *str_DutyName = [dic_Register objectForKey_YM:@"dutyName"];
-    cell.lb_UserName.text = [NSString stringWithFormat:@"%@ %@", str_RegisterName, str_DutyName];
-
+    NSString *str_DutyName = [dic_Register objectForKey_YM:@"responsibilityName"];
+    cell.lb_UserName.text = str_RegisterName;
+    cell.lb_Position.text = str_DutyName;
+    
     //[주목!주목]
     id category = [dic_Main objectForKey:@"category"];
     if( [category isKindOfClass:[NSDictionary class]] )

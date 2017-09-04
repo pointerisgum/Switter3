@@ -54,6 +54,7 @@
     self.tbv_List.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.bounds.size.width, 8.f)];
 
     [self updateList];
+    [self updateSnsComment];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -111,10 +112,22 @@
                                             }
                                         }
                                     }];
-
-    
 }
 
+- (void)updateSnsComment
+{
+    //알림 화면이 보일때 호출
+    [[WebAPI sharedData] callAsyncWebAPIBlock:@"record/board/SNS_COMMENT"
+                                        param:nil
+                                   withMethod:@"POST"
+                                    withBlock:^(id resulte, NSError *error) {
+                                        
+                                        if( resulte )
+                                        {
+
+                                        }
+                                    }];
+}
 
 
 #pragma mark - Table view methods
@@ -139,7 +152,7 @@
     
     NSDictionary *dic_Main = self.arM_List[indexPath.row];
     NSDictionary *dic_Member = [dic_Main objectForKey:@"member"];
-    TimeStruct *time = [Util makeTimeWithTimeStamp:[[dic_Member objectForKey_YM:@"registration"] doubleValue]];
+    TimeStruct *time = [Util makeTimeWithTimeStamp:[[dic_Main objectForKey_YM:@"registration"] doubleValue]];
     cell.lb_Date.text = [NSString stringWithFormat:@"%04ld.%02ld.%02ld", time.nYear, time.nMonth, time.nDay];
 
     NSString *str_UserName = [NSString stringWithFormat:@"%@", [dic_Member objectForKey_YM:@"name"]];

@@ -12,6 +12,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *iv_User;
 @property (nonatomic, weak) IBOutlet UILabel *lb_StoreAndDate;
 @property (nonatomic, weak) IBOutlet UILabel *lb_Name;
+@property (nonatomic, weak) IBOutlet UILabel *lb_Position;
 @property (nonatomic, weak) IBOutlet UILabel *lb_Contents;
 @property (nonatomic, weak) IBOutlet UIView *v_ImageBg;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *lc_TotalImageHeight;
